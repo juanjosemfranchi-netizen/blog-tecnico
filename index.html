@@ -1,119 +1,201 @@
-# Cómo automatizamos la creación de publicaciones para un e-commerce utilizando Inteligencia Artificial
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Técnico: Automatización de E-Commerce con IA - Juan José M. Franchi</title>
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #212529;
+            --primary-color: #0d6efd;
+            --secondary-color: #495057;
+            --border-color: #dee2e6;
+            --card-bg: #ffffff;
+        }
 
-**Autor:** Tu Nombre
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
 
-**Fecha:** Julio 2026
+        header {
+            background-color: #0f172a;
+            color: #ffffff;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            border-bottom: 4px solid var(--primary-color);
+        }
 
----
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+        }
 
-## Contexto
+        .meta-info {
+            margin-top: 0.5rem;
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
 
-En un proyecto de e-commerce detectamos que la creación manual de publicaciones consumía demasiado tiempo. Cada producto requería escribir un título, descripción, beneficios y contenido para redes sociales.
+        main {
+            max-width: 850px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
 
-El objetivo fue automatizar completamente este proceso utilizando Inteligencia Artificial.
+        section {
+            background: var(--card-bg);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+        }
 
----
+        h2 {
+            color: #1e293b;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            margin-top: 0;
+            font-size: 1.4rem;
+        }
 
-## Problema
+        h3 {
+            color: #334155;
+            font-size: 1.15rem;
+            margin-top: 1.5rem;
+        }
 
-La información de los productos llegaba desde diferentes proveedores y tenía formatos distintos.
+        p {
+            margin: 0 0 1rem 0;
+            text-align: justify;
+        }
 
-Como consecuencia:
+        ul {
+            margin: 0 0 1rem 0;
+            padding-left: 1.2rem;
+        }
 
-* existían publicaciones incompletas;
-* los textos no mantenían un mismo estilo;
-* el tiempo de publicación era elevado.
+        li {
+            margin-bottom: 0.75rem;
+        }
 
-Además, durante las primeras pruebas la IA generaba respuestas demasiado extensas y poco comerciales.
+        strong {
+            color: #0f172a;
+        }
 
----
+        .highlight-box {
+            background-color: #f1f5f9;
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 4px 4px 0;
+            font-size: 0.95rem;
+        }
 
-## Solución implementada
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            background-color: #1e293b;
+            color: #cbd5e1;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+        }
 
-Se desarrolló el siguiente flujo:
+        footer a {
+            color: #38bdf8;
+            text-decoration: none;
+            margin: 0 0.5rem;
+        }
 
-Google Forms
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
 
-↓
+    <header>
+        <h1>Cómo automatizamos la creación de publicaciones para un e-commerce utilizando Inteligencia Artificial</h1>
+        <div class="meta-info">
+            Por <strong>Juan José M. Franchi</strong> | Desarrollo e Integración de Sistemas
+        </div>
+    </header>
 
-Google Sheets
+    <main>
+        
+        <section id="contexto">
+            <h2>Contexto del Proyecto</h2>
+            <p>
+                Durante el desarrollo de un proyecto de automatización para un e-commerce, detectamos que una de las tareas operativas que más tiempo consumía era la creación manual de publicaciones de productos. Cada artículo requería redactar individualmente un título atractivo, una descripción comercial optimizada, una lista detallada de características y textos específicos para canales de marketing en redes sociales.
+            </p>
+            <p>
+                El objetivo central fue reducir drásticamente este cuello de botella manual mediante el diseño de un flujo integrado que utilizara Inteligencia Artificial (OpenAI API) para generar este contenido crítico de forma consistente, escalable y estructurada.
+            </p>
+        </section>
 
-↓
+        <section id="post-mortem">
+            <h2>Diagnóstico Crítico y Post-Mortem Técnico</h2>
+            <p>
+                La integración inicial se estructuró conectando un formulario de ingreso de datos crudos (Google Forms), almacenando los registros en una hoja de cálculo (Google Sheets) y utilizando Make (Integromat) como motor de orquestación de webhooks para enviar los payloads hacia la API de OpenAI. Sin embargo, las primeras pruebas de validación expusieron <strong>fallos de consistencia críticos</strong> en producción.
+            </p>
 
-Make
+            <h3>El Problema Real: Inconsistencia semántica y respuestas sin estructura</h3>
+            <p>
+                El principal desafío técnico radicó en la alta variabilidad del formato de los datos de entrada. Mientras algunos productos incluían textos comerciales descriptivos, otros solo aportaban especificaciones de ingeniería aisladas (ej. "Caloventor 2000W, Blanco"). 
+            </p>
+            <p>
+                Al carecer el prompt de restricciones sintácticas explícitas y delimitadores de variables, la IA comenzó a manifestar comportamientos problemáticos: generaba outputs con longitudes excesivas que rompían los límites de caracteres de las tiendas online, incurría en redundancias severas repitiendo especificaciones técnicas en la sección comercial y adoptaba un tono plano o hiper-técnico totalmente inadecuado para la conversión de ventas en una tienda retail.
+            </p>
 
-↓
+            <div class="highlight-box">
+                <strong>Acción Correctiva de Ingeniería de Prompts:</strong> El análisis del post-mortem reveló de forma honesta que el problema no radicaba en las capacidades del modelo generativo, sino en la ausencia de un contrato de interfaz de instrucciones (System Prompt) riguroso. 
+                Para solucionarlo, se refactorizó el prompt inyectando roles explícitos ("Actúa como especialista en marketing para e-commerce"), se definieron longitudes máximas delimitadas por tokens (ej. máximo 200 palabras), se añadieron reglas de exclusión para evitar bucles repetitivos y se forzó una estructura JSON fija para asegurar que títulos, listas y textos de redes sociales se mapearan en variables predecibles.
+            </div>
+        </section>
 
-OpenAI
+        <section id="aprendizajes">
+            <h2>Lecciones Aprendidas Detalladas</h2>
+            <ul>
+                <li>
+                    <strong>La IA requiere contextos parametrizados:</strong> Aprendimos por experiencia directa que los modelos de lenguaje masivos (LLMs) son altamente sensibles a la ambigüedad. No basta con solicitar "una descripción corta"; es mandatorio delimitar el alcance del vocabulario, el tono (comercial versus técnico) y el formato del output mediante técnicas de Few-Shot Prompting o esquemas estructurados nativos.
+                </li>
+                <li>
+                    <strong>La automatización no es solo conectar conectores:</strong> Conectar Google Sheets con OpenAI mediante Make toma minutos; el verdadero desafío de ingeniería de software reside en diseñar el flujo completo de la información, contemplando la sanitización previa de los datos de entrada para evitar que texto corrupto afecte la respuesta del modelo.
+                </li>
+                <li>
+                    <strong>Monitoreo y Pruebas Continuas (Ajuste de Hiperparámetros):</strong> Los sistemas basados en IA generativa requieren una metodología de pruebas continuas. Evaluar los resultados con muestras extremas de productos (tanto con exceso como con falta de datos técnicos) nos permitió calibrar la temperatura de la API, buscando el equilibrio exacto entre la creatividad comercial y el determinismo técnico.
+                </li>
+            </ul>
+        </section>
 
-↓
+        <section id="feedback">
+            <h2>Reflexión sobre el Feedback Radicalmente Sincero</h2>
+            <p>
+                El ciclo de desarrollo de este pipeline estuvo regido por una metodología basada en la transparencia extrema y la evaluación objetiva del rendimiento. En lugar de justificar las fallas iniciales del sistema como "limitaciones de la IA", el equipo analizó los outputs de manera fría y estructurada.
+            </p>
+            <p>
+                Este enfoque honesto aceleró la identificación de vulnerabilidades en la capa del prompt, optimizando drásticamente los tiempos de iteración. Validar las críticas constructivas sobre el código y la arquitectura desde las primeras etapas del desarrollo demostró ser el mecanismo más eficiente para mitigar riesgos técnicos y elevar la calidad del producto final a estándares profesionales.
+            </p>
+        </section>
 
-Google Docs
+    </main>
 
-↓
+    <footer>
+        <p>© 2026 Juan José M. Franchi - Todos los derechos reservados.</p>
+        <p>
+            <!-- RECUERDA: Completa con tus datos reales para cumplir la sugerencia del profesor -->
+            <a href="mailto:tu-correo-real@ejemplo.com">juanjosemfranchi@ejemplo.com</a> | 
+            <a href="https://github.com/juanjosemfranchi-netizen" target="_blank">GitHub</a> | 
+            <a href="https://linkedin.com/in/tu-perfil-real" target="_blank">LinkedIn</a>
+        </p>
+    </footer>
 
-Resultado final listo para publicar.
-
----
-
-## Evidencia del flujo
-
-![Workflow](assets/workflow.png)
-
----
-
-## Acciones realizadas
-
-* Limpieza de datos.
-* Normalización del formato.
-* Creación de prompts específicos.
-* Automatización mediante Make.
-* Generación automática de documentos.
-
----
-
-## Post-mortem
-
-Después de las primeras pruebas se detectó que el mayor problema no era el modelo de IA sino la calidad del prompt.
-
-Se realizaron varias iteraciones hasta obtener resultados consistentes.
-
-Las mejoras fueron:
-
-* limitar la longitud;
-* solicitar un tono comercial;
-* evitar repeticiones;
-* estructurar la respuesta.
-
----
-
-## Aprendizajes
-
-Este proyecto permitió comprobar que una buena ingeniería de prompts mejora significativamente la calidad de las respuestas generadas por IA.
-
-También se confirmó que automatizar procesos reduce tiempos y disminuye errores humanos.
-
----
-
-## Control de versiones
-
-Durante el desarrollo se realizaron distintos commits para registrar la evolución del proyecto.
-
-Ejemplos:
-
-* Initial commit
-* Agregada estructura del proyecto
-* Implementación del workflow
-* Mejora del prompt
-* Corrección de documentación
-* Publicación del blog
-
----
-
-## Feedback radicalmente sincero
-
-Se recibieron observaciones sobre la calidad de los textos generados.
-
-En lugar de mantener la primera versión, se analizaron las críticas y se modificó el prompt para producir contenido más útil, breve y comercial.
-
-El resultado fue una mejora notable del sistema y una experiencia de aprendizaje basada en la mejora continua.
+</body>
+</html>
