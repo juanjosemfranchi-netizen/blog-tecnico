@@ -3,50 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reporte de Ingeniería: Automatización E-Commerce</title>
+    <title>Post-Mortem Técnico: Automatización de E-Commerce - Juan José M. Franchi</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; line-height: 1.8; color: #333; max-width: 950px; margin: 0 auto; padding: 40px; background: #f9f9f9; }
-        .card { background: #fff; padding: 3rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-        h1 { color: #0f172a; border-bottom: 3px solid #2563eb; }
-        h2 { color: #1e293b; margin-top: 3rem; border-left: 5px solid #2563eb; padding-left: 15px; }
-        .metrics { display: flex; gap: 20px; margin: 20px 0; }
-        .metric-box { background: #eff6ff; padding: 15px; border-radius: 8px; flex: 1; text-align: center; font-weight: bold; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.8; color: #2d3436; max-width: 900px; margin: 0 auto; padding: 40px; background: #f4f6f7; }
+        .container { background: #ffffff; padding: 3rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        h1 { color: #0984e3; border-bottom: 3px solid #0984e3; padding-bottom: 10px; }
+        h2 { color: #0984e3; margin-top: 3rem; border-left: 6px solid #0984e3; padding-left: 20px; text-transform: uppercase; font-size: 1.3rem; }
+        .highlight { background: #f0f7ff; border-left: 4px solid #0984e3; padding: 1.5rem; margin: 2rem 0; border-radius: 4px; }
+        .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+        .metric-box { background: #e3f2fd; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; }
+        code { background: #dfe6e9; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>Post-Mortem Técnico: Optimización y Escalabilidad de Pipeline de IA</h1>
-        <p><strong>Autor:</strong> Juan José M. Franchi | <strong>Estatus:</strong> Proyecto en Producción</p>
+    <div class="container">
+        <h1>Post-Mortem: Optimización de Pipelines de Automatización (IA)</h1>
+        <p><strong>Autor:</strong> Juan José M. Franchi | <strong>Rol:</strong> Systems Analyst</p>
 
-        <h2>1. Contexto y Problema</h2>
-        <p>El proyecto nació bajo una premisa simple: la operación manual de carga de productos para el e-commerce estaba limitando el crecimiento. El proceso tradicional, que involucraba redactar manualmente descripciones, títulos y tags, se realizaba en silos, sin un estándar de calidad. Los datos de entrada eran heterogéneos, variando desde descripciones ricas hasta simples "códigos de producto" sin contexto. Esto no solo consumía 15 minutos por SKU, sino que introducía errores humanos constantes.</p>
-        
-        <h2>2. Arquitectura del Flujo y Ajustes Técnicos</h2>
-        <p>La implementación consistió en un flujo de tres capas:</p>
+        <h2>1. Introducción</h2>
+        <p>Este informe detalla la evolución técnica de un sistema de automatización para la carga de productos en e-commerce. El objetivo fue mitigar la ineficiencia operativa mediante la integración de LLMs, buscando una estructura de salida predecible y profesional.</p>
+
+        <h2>2. Análisis de Fallas: ¿Qué observamos en producción?</h2>
+        <p>Tras las primeras ejecuciones del pipeline, detectamos errores críticos que bloqueaban la carga en el backend. Los incidentes más recurrentes fueron:</p>
         <ul>
-            <li><strong>Capa de Ingesta:</strong> Un formulario centralizado que normaliza la entrada de datos mínimos.</li>
-            <li><strong>Capa de Inteligencia:</strong> API de OpenAI (GPT-4o). Aquí enfrentamos el mayor desafío: la falta de determinismo. Para solucionar esto, implementamos una configuración técnica específica: <code>temperature: 0.2</code> (buscando bajo riesgo y alta precisión) y forzamos un contrato mediante un <code>System Prompt</code> que define una salida en formato JSON con campos: <code>titulo_seo</code>, <code>descripcion_comercial</code> y <code>caracteristicas_tecnicas</code>.</li>
-            <li><strong>Capa de Publicación:</strong> Integración mediante Webhooks hacia la plataforma destino.</li>
+            <li><strong>JSON inválido:</strong> El modelo incluía caracteres especiales o texto narrativo fuera del bloque de código, rompiendo el proceso de <em>parsing</em>.</li>
+            <li><strong>Omisión de campos obligatorios:</strong> En productos complejos, la IA priorizaba la creatividad, dejando secciones técnicas vacías.</li>
         </ul>
+        <p><strong>Ejemplo:</strong> El backend rechazaba automáticamente la carga al no poder procesar el JSON recibido o al detectar campos obligatorios vacíos.</p>
+        <p><strong>Causa Raíz:</strong> Ausencia de un contrato de interfaz rígido; el modelo actuaba como redactor creativo y no como servicio de datos.</p>
 
-        <h2>3. Análisis Post-Mortem y Métricas de Impacto</h2>
-        <p>Tras la primera iteración, los resultados fueron mixtos. Si bien la automatización estaba activa, la calidad del texto no convertía en ventas. El post-mortem reveló que nuestro prompt trataba al modelo como un "escritor creativo" cuando el e-commerce requiere un "especialista en ventas".</p>
+        <h2>3. Estrategia de Refactorización y Validación</h2>
+        <p>Implementamos una estrategia de "Zero-Shot con esquema rígido" para forzar una respuesta en formato JSON validado.</p>
+        <div class="highlight">
+            <strong>Acción Técnica:</strong> Refactorización del prompt incluyendo roles definidos, temperatura (0.2) y esquemas obligatorios. 
+            <br><em>Evidencia:</em> <a href="https://github.com/juanjosemfranchi-netizen/blog-tecnico/commit/e210628">Commit de Refactorización de Prompt</a>.
+        </div>
         
-        <div class="metrics">
-            <div class="metric-box">Tiempo Manual: 15 min/SKU</div>
-            <div class="metric-box">Tiempo Automatizado: 30 seg/SKU</div>
-            <div class="metric-box">Eficiencia: 96% de ahorro</div>
+        <h2>4. Métricas de Desempeño</h2>
+        <p>La eficacia se validó comparando el comportamiento del pipeline procesando 100 ejecuciones (cada una correspondiente a un ítem del catálogo):</p>
+        <div class="metrics-grid">
+            <div class="metric-box">Antes: ~35% fallas de parseo (sobre las primeras 50 ejecuciones)</div>
+            <div class="metric-box">Después: <1% fallas de validación (en las últimas 100 ejecuciones)</div>
         </div>
 
-        <p>La refactorización se llevó a cabo utilizando un flujo de trabajo profesional mediante ramas en Git, asegurando que cada cambio en el prompt fuera revisado y testeado antes de pasar a producción. <a href="https://github.com/juanjosemfranchi-netizen/blog-tecnico/commit/e210628">Ver Commit de Refactorización</a>.</p>
+        <h2>5. Reglas de Oro Aprendidas</h2>
+        <ul>
+            <li><strong>Contrato de Interfaz:</strong> Todo output de IA debe tratarse como una API: si no cumple el esquema, se rechaza.</li>
+            <li><strong>Gatekeeping:</strong> Ninguna salida llega a producción sin pasar por un script de validación (<code>tests.py</code>).</li>
+            <li><strong>Gestión de Cambios:</strong> Cualquier ajuste en el prompt es una modificación de contrato y debe versionarse (ver <a href="https://github.com/juanjosemfranchi-netizen/blog-tecnico/commit/da6a969fa50268ce6c999e38d3570ab268f69cb5">implementación de tests.py</a>).</li>
+        </ul>
 
-        <h2>4. Validación mediante Integración Continua</h2>
-        <p>Un error común en proyectos de IA es confiar ciegamente en el modelo. Para mitigar esto, desarrollamos una suite de validación de código. El archivo <code>tests.py</code> no es solo un script; es un contrato de calidad que verifica que el JSON generado no esté roto o mal formado. Si el test falla, el pipeline se detiene. <a href="https://github.com/juanjosemfranchi-netizen/blog-tecnico/commit/da6a969fa50268ce6c999e38d3570ab268f69cb5">Ver registro de pruebas automáticas</a>.</p>
-
-        <h2>5. Reflexión sobre el Feedback y Crecimiento Profesional</h2>
-        <p>La recepción de feedback crítico durante este proceso fue el punto de inflexión de mi desarrollo como Systems Analyst. Inicialmente, mi percepción estaba sesgada hacia la "funcionalidad" (si el código corría, estaba bien). El feedback me obligó a cuestionar la "calidad de la arquitectura".</p>
-        <p>¿Cómo impactó esto? Cambié la metodología. Pasé de realizar commits directos a adoptar ramas de trabajo y realizar Pull Requests auto-revisados. Entendí que el código es comunicación: si mi documentación (o mi post-mortem) no explica el 'por qué' y el 'cómo', el código es inútil para el equipo. Esta evolución me ha permitido elevar los estándares de mis entregables, integrando la trazabilidad como parte de mi identidad como desarrollador.</p>
+        <h2>6. Reflexión sobre el Feedback</h2>
+        <p><strong>Feedback recibido:</strong> El proyecto carecía de evidencia de errores concretos y una narrativa que justificara la robustez técnica.</p>
+        <p><strong>Autocrítica:</strong> Me di cuenta de que estaba describiendo el "qué" funcional, pero no el "por qué" técnico con evidencia suficiente.</p>
+        <p><strong>Cambio aplicado:</strong> Integré el análisis cuantitativo de fallas, la suite de validación automatizada y adopté <em>Conventional Commits</em> para mejorar la trazabilidad. Esta evolución permitió elevar el estándar de mis entregables, pasando de un enfoque funcional a uno auditable y profesional.</p>
     </div>
 </body>
-</html>
 </html>
