@@ -1,15 +1,17 @@
 # Blog Técnico - Post-Mortem de Proyecto
 
-Este repositorio contiene la entrega del Blog Técnico enfocado en el análisis de un post-mortem de desarrollo. 
+Este repositorio contiene la entrega del Blog Técnico enfocado en el análisis de un post-mortem de desarrollo.
 
 ## 🚀 Acceso al Blog
-Puedes leer la publicación completa e interactiva ingresando a través de GitHub Pages en el siguiente enlace:
-👉 [Enlace a tu GitHub Pages]
+Puedes leer la publicación completa e interactiva ingresando a través de nuestra URL de GitHub Pages:
+👉 [https://juanjosemfranchi-netizen.github.io/blog-tecnico/](https://juanjosemfranchi-netizen.github.io/blog-tecnico/)
 
-## 🛠️ Tecnologías Utilizadas
-- HTML5 / CSS3
-- Markdown
-- Git / GitHub
+## 🛠️ Tecnologías y Trazabilidad
+Este proyecto fue desarrollado bajo una metodología de integración continua. A continuación, presento la evidencia técnica de los hitos mencionados:
+
+*   **Refactorización del Prompt de IA:** Ajuste crítico para forzar estructura JSON. [Ver Commit en GitHub](https://github.com/juanjosemfranchi-netizen/blog-tecnico/commit/c2759e0a0d4c82c3c4573752e2553b4999f8d167)
+*   **Validación Automática:** Implementación de tests para asegurar la calidad de los datos de salida. [Ver Commit de tests.py](https://github.com/juanjosemfranchi-netizen/blog-tecnico/commit/da6a969fa50268ce6c999e38d3570ab268f69cb5)
 
 ## 📝 Información del Autor
-- **Nombre:** Juan José M. Franchi
+Nombre: Juan José M. Franchi
+Rol: Systems Analyst
