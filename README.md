@@ -9,7 +9,7 @@ Puedes leer la publicación completa e interactiva ingresando a través de nuest
 ## 🛠️ Tecnologías y Trazabilidad
 Este proyecto fue desarrollado bajo una metodología de integración continua. A continuación, presento la evidencia técnica de los hitos mencionados:
 
-*   **Refactorización del Prompt de IA:** Ajuste crítico para forzar estructura JSON. [[Ver Commit en GitHub](https://github.com/juanjosemfranchi-netizen/blog-tecnico/commit/c2759e0a0d4c82c3c4573752e2553b4999f8d167)](https://github.com/juanjosemfranchi-netizen/blog-tecnico/commit/2bcf815df6f1fb95a4a5b4e90a544d3c9b4e0866)
+*   **Refactorización del Prompt de IA:** Ajuste crítico para forzar estructura JSON. [(Ultimos Cambios del Commit)](https://github.com/juanjosemfranchi-netizen/blog-tecnico/commit/2bcf815df6f1fb95a4a5b4e90a544d3c9b4e0866)
 *   **Validación Automática:** Implementación de tests para asegurar la calidad de los datos de salida. [Ver Commit de tests.py](https://github.com/juanjosemfranchi-netizen/blog-tecnico/commit/da6a969fa50268ce6c999e38d3570ab268f69cb5)
 
 ## 📝 Información del Autor
